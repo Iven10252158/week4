@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入</title>
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        html,
+        body {
+          height: 100vh;
+          text-align: center;
+        }
+        body {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <form class="form-signin" @submit.prevent="signin">
+                <h1 class="h3 mb-3 font-weight-normal">
+                  請先登入
+                </h1>
+                <div class="form-group">
+                  <label for="inputEmail" class="sr-only">Email address</label>
+                  <input id="inputEmail" v-model="user.email" type="email" class="form-control" placeholder="Email address"
+                    required autofocus>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword" class="sr-only">Password</label>
+                  <input id="inputPassword" v-model="user.password" type="password" class="form-control"
+                    placeholder="Password" required>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                  登入
+                </button>
+                <br>
+                <button class="btn btn-outline-primary btn-block" type="button" @click="signout">
+                  登出
+                </button>
+                <br>
+                <p class="mt-5 mb-3 text-muted">
+                  © 2020~∞ - 六角學院
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+
+
+<script>
+    const uuid = '35e5ec2f-4b81-4496-9634-fef29022b381'; // 請加入個人的 UUID
+    const apiPath = 'https://course-ec-api.hexschool.io/api';
+    new Vue({
+        el:'#app',
+        data(){
+            return{
+                user:{
+                    email:'',
+                    password:''
+                },
+            token:'Z2V7AZOtKD42nl1p60maemg7nVFZHrSTaIfdRkqCZOKuKWtPABfcu2Z5pgja',
+            }
+        },
+        methods:{
+            signin(){
+                const api = `${apiPath}/auth/login`;
+                axios.post(api,this.user).then((res)=>{
+                    console.log(res);
+                const token = res.data.token; //把token的值取出來
+                const expired = res.data.expired; //把到期日給取出來
+            //weekfourToken存在cookie裡面的token的名稱 expires是存在cookie的到期日
+            document.cookie = `weekfourToken=${token}; expires=${new Date(expired * 1000)}; path=/`;
+            //把到期日的一串數字換算成Unix時間格式 把遠端的token跟到期日都存起來
+            this.token = document.cookie.replace(/(?:(?:^|.*;\s*)weekfourToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            console.log(this.token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
+            window.location = './products.html';
+            //把存在cookie裡面的token取出來
+        }).catch((error) => {
+            console.log(error);            
+            });     
+        },
+        signout(){
+            // var vm = this;
+            document.cookie = `weekfourToken=; expires=; path=/`;
+            this.user.email = '';
+            this.user.password = '';
+          }
+    
+  },
+       
+})
+</script>
+ </body>
+</html>
