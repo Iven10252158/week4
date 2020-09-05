@@ -91,35 +91,39 @@ export default {
 
     }
   },
-  props:['tempProduct','api'],
+  props:['products','tempProduct','api'],
   methods:{
-    // updateProduct(){
-    //   const urlPost = `${this.api.apiPath}${this.api.uuid}/admin/ec/product`;
-    //      this.tempProduct={
-    //        imageUrl: [''],
-    //    };
-    //   axios.post(urlPost,this.tempProduct) 
-    //   .then((res)=>{
-    //     console.log(res);
-    //     this.tempProduct = res.data.data;
-    //     this.$emit('update',this.tempProduct);
-    //   })
-    // },
     updateProduct(){  
-      const urlPost = `${this.api.apiPath}${this.api.uuid}/admin/ec/product`;
-      axios.post(urlPost,this.tempProduct) 
-      .then((res)=>{
-        console.log(res);
-        this.tempProduct = res.data.data;
-        this.$emit('update');
-      })
-
-      const url = `${this.api.apiPath}${this.api.uuid}/admin/ec/product/${this.tempProduct.id}`;
-            axios.patch(url,this.tempProduct)
-            .then((res)=>{
-              this.$emit('update');
-              $(this.$refs.productModal).modal('hide');
-            })
-    },
-  },
+      if(this.tempProduct.id){
+        this.products.forEach((item,i)=>{
+          if(item.id === this.tempProduct.id){
+            const patchApi =  `${this.api.apiPath}${this.api.uuid}/admin/ec/product/${this.tempProduct.id}`;
+              axios.patch(patchApi,this.tempProduct) 
+              .then((res)=>{
+                console.log(res);
+                // this.tempProduct = res.data.data;
+                this.$emit('update');
+              })
+          }
+        })
+    }else{
+      const id = new Date().getTime();
+      const postApi = `${this.api.apiPath}${this.api.uuid}/admin/ec/product`;
+      axios.post(postApi,this.tempProduct)
+        .then((res)=>{
+          console.log(res);
+          this.$emit('update');
+          })
+      }    
+    } 
+  }
 }
+// ${this.api.apiPath}${this.api.uuid}/admin/ec/product`;
+  //     const url = `${this.api.apiPath}${this.api.uuid}/admin/ec/product/${this.tempProduct.id}`;
+  //           axios.patch(url,this.tempProduct)
+  //           .then((res)=>{
+  //             this.$emit('update');
+  //             $(this.$refs.productModal).modal('hide');
+  //           })
+  //   },
+  // },

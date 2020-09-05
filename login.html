@@ -39,7 +39,7 @@
                     placeholder="Password" required>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit" @click="signin">
-                  <div class="spinner-grow spinner-grow-sm" role="status"></div>
+                  <!-- <div class="spinner-grow spinner-grow-sm" role="status"></div> -->
                   登入
                 </button>
                 <br>
@@ -57,7 +57,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3.3.2/dist/vue-loading.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3.3.2/dist/vue-loading.min.js"></script> -->
 
 <script>
     // Vue.component('loading',VueLoading);
@@ -70,21 +70,21 @@
             email:'',
             password:''
             },
-        isLoading:false,
+        // isLoading:false,
         },
         methods:{
             signin(){
-                this.isLoading=true;
+                // this.isLoading=true;
                 const api = `${apiPath}/auth/login`;
                 axios.post(api,this.user).then((res)=>{
                 console.log(res);
-                this.isLoading=false;
+                // this.isLoading=false;
                 const token = res.data.token; //把token的值取出來
                 const expired = res.data.expired; //把到期日給取出來
             //weekfourToken存在cookie裡面的token的名稱 expires是存在cookie的到期日
             document.cookie = `weekfourToken=${token}; expires=${new Date(expired * 1000)}; path=/`;
             //把到期日的一串數字換算成Unix時間格式 把遠端的token跟到期日都存起來
-            // this.token = document.cookie.replace(/(?:(?:^|.*;\s*)weekfourToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+           this.token = document.cookie.replace(/(?:(?:^|.*;\s*)weekfourToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
             console.log(this.token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
             window.location = './products.html';

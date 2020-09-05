@@ -19,7 +19,7 @@ data:{
     uuid:'35e5ec2f-4b81-4496-9634-fef29022b381',
     apiPath:'https://course-ec-api.hexschool.io/api/'
 },
-    token:'weZhtAxBDMk4MlAVb3yBYdGH7AVXjQrAXmn4HktxoKKd2BfUVLQE2ueGl8vK',
+    token:'4lQH8cqqh7zuRu9SCp5v3h88n7GYNnLrKLpqs3C8R7X57mytzVk1uKffEGwF',
     isNew:''
 },
 methods:{
