@@ -17,7 +17,12 @@ export default {
               <input id="imageUrl" v-model="tempProduct.imageUrl[0]" type="text" class="form-control"
                 placeholder="請輸入圖片連結">
             </div>
-            <img class="img-fluid" :src="tempProduct.imageUrl" alt>
+      <div class = "form-group">
+        <label for = "customFile">或上傳圖片
+        </label>
+        <input id="customFile" ref="file" type="file" class="form-control" @change="uploadFile">        
+      </div>
+            <img class="img-fluid" :src="tempProduct.imageUrl[0]" alt>
           </div>
           <div class="col-sm-8">
             <div class="form-group">
@@ -114,8 +119,23 @@ export default {
           console.log(res);
           this.$emit('update');
           })
-      }    
-    } 
+      }
+    },
+    uploadFile(){
+      const uploadedFile = this.$refs.file.file[0];
+      console.dir(uploadedFile);
+      const formData=new FormData();
+      formData.append('file',uploadedFile);
+     //POST api/{uuid}/admin/storage
+     const url = `${this.api.apiPath}${this.api.uuid}/admin/storage`;
+      axios.post(url,formData,{
+        headers:{
+          'Content-Type':'multipart/form-data',
+        },
+      }).then((res)=>{
+        console.log(res);
+      })
+    }
   }
 }
 // ${this.api.apiPath}${this.api.uuid}/admin/ec/product`;
