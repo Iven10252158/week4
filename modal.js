@@ -93,7 +93,7 @@ export default {
     
   data(){
     return{
-
+     
     }
   },
   props:['products','tempProduct','api'],
@@ -122,8 +122,10 @@ export default {
       }
     },
     uploadFile(){
-      const uploadedFile = this.$refs.file.file[0];
-      console.dir(uploadedFile);
+      // const vm = this;
+      console.log(this); //在 uploadFile 方法中，我們可以先透過 console.log(this) 查看上傳的檔案有哪些資料格式
+       const uploadedFile = this.$refs.file.files[0]; //仔細尋找後，可以發現我們想要的圖檔就放在 $refs → file → files[0] 這個地方，
+       console.log(uploadedFile);
       const formData=new FormData();
       formData.append('file',uploadedFile);
      //POST api/{uuid}/admin/storage
@@ -133,17 +135,12 @@ export default {
           'Content-Type':'multipart/form-data',
         },
       }).then((res)=>{
-        console.log(res);
+        //  console.log(res);
+        if (res.data.success) {
+          this.$set(this.tempProduct, "imageUrl", res.data.data.imageUrl[0]); // 雙向綁定
+        }
+        //  this.tempProduct.imageUrl.push(res.data.data.path);
       })
     }
   }
 }
-// ${this.api.apiPath}${this.api.uuid}/admin/ec/product`;
-  //     const url = `${this.api.apiPath}${this.api.uuid}/admin/ec/product/${this.tempProduct.id}`;
-  //           axios.patch(url,this.tempProduct)
-  //           .then((res)=>{
-  //             this.$emit('update');
-  //             $(this.$refs.productModal).modal('hide');
-  //           })
-  //   },
-  // },
