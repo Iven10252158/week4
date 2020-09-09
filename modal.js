@@ -137,7 +137,7 @@ export default {
       }).then((res)=>{
         //  console.log(res);
         if (res.data.success) {
-          this.$set(this.tempProduct, "imageUrl", res.data.data.imageUrl[0]); // 雙向綁定
+          this.$set(this.tempProduct, "imageUrl", res.data.path); // 雙向綁定
         }
         //  this.tempProduct.imageUrl.push(res.data.data.path);
       })
