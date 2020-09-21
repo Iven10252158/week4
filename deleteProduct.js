@@ -33,7 +33,7 @@ export default {
     delProduct(){
       //DELETE api/{uuid}/admin/ec/product/{id}
       const url = `${this.api.apiPath}${this.api.uuid}/admin/ec/product/${this.tempProduct.id}`;
-      axios.delete(url,this.tempProduct)
+      axios.delete(url)
         .then((res)=>{
           console.log(res);
           this.$emit('update');
